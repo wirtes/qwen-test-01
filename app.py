@@ -72,7 +72,7 @@ def generate():
         enhanced_prompt = prompt
         
         # Tokenize input
-        inputs = tokenizer(enhanced_prompt, return_tensors="pt", truncate=True, max_length=512)
+        inputs = tokenizer(enhanced_prompt, return_tensors="pt", truncation=True, max_length=512)
         input_length = inputs.input_ids.shape[1]
         
         # Generate response

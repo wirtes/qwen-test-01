@@ -5,7 +5,7 @@ services:
       - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
-      - MODEL_NAME=distilgpt2  # Lightweight model for testing
+      - MODEL_NAME=mistralai/Mistral-7B-Instruct-v0.1  # Mistral 7B model
       - RAG_DOCUMENT=/app/knowledge.md  # Path to RAG document
     volumes:
       - ./cache:/root/.cache/huggingface  # Cache models locally
