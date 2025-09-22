@@ -5,7 +5,8 @@ import torch
 app = Flask(__name__)
 
 # Initialize model and tokenizer (using a lightweight compatible model)
-MODEL_NAME = "distilgpt2"
+import os
+MODEL_NAME = os.getenv("MODEL_NAME", "distilgpt2")
 print(f"Loading model: {MODEL_NAME}")
 
 try:

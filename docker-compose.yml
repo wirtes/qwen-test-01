@@ -5,6 +5,7 @@ services:
       - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
+      - MODEL_NAME=DistilQwen2.5-0.5B-Instruct  # Change this to use different models
     volumes:
       - ./cache:/root/.cache/huggingface  # Cache models locally
     restart: unless-stopped
