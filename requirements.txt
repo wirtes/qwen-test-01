@@ -2,3 +2,6 @@ torch==2.0.1
 transformers==4.35.2
 flask==3.0.0
 numpy==1.24.3
+sentence-transformers==2.2.2
+faiss-cpu==1.7.4
+markdown==3.5.1

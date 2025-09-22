@@ -5,7 +5,8 @@ services:
       - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
-      - MODEL_NAME=DistilQwen2.5-0.5B-Instruct  # Change this to use different models
+      - MODEL_NAME=mistralai/Mistral-7B-Instruct-v0.1  # Mistral 7B model
+      - RAG_DOCUMENT=/app/knowledge.md  # Path to RAG document
     volumes:
       - ./cache:/root/.cache/huggingface  # Cache models locally
     restart: unless-stopped
