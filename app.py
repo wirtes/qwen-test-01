@@ -33,7 +33,9 @@ def generate():
     
     data = request.json
     prompt = data.get('prompt', '')
-    max_length = data.get('max_length', 100)
+    max_length = data.get('max_length', 50)  # Shorter default
+    max_new_tokens = data.get('max_new_tokens', 30)  # Control new tokens only
+    temperature = data.get('temperature', 0.7)
     
     if not prompt:
         return jsonify({"error": "No prompt provided"}), 400
@@ -41,15 +43,19 @@ def generate():
     try:
         # Tokenize input
         inputs = tokenizer(prompt, return_tensors="pt")
+        input_length = inputs.input_ids.shape[1]
         
         # Generate response
         with torch.no_grad():
             outputs = model.generate(
                 inputs.input_ids,
-                max_length=max_length,
+                max_length=min(max_length, input_length + max_new_tokens),
+                max_new_tokens=max_new_tokens,
                 do_sample=True,
-                temperature=0.7,
-                pad_token_id=tokenizer.eos_token_id
+                temperature=temperature,
+                pad_token_id=tokenizer.eos_token_id,
+                eos_token_id=tokenizer.eos_token_id,
+                early_stopping=True
             )
         
         # Decode response

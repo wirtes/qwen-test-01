@@ -13,7 +13,8 @@ def test_qwen_api():
     print("\nTesting generation endpoint...")
     payload = {
         "prompt": "Hello, how are you?",
-        "max_length": 50
+        "max_new_tokens": 15,  # Only generate 15 new tokens
+        "temperature": 0.5
     }
     
     response = requests.post(
