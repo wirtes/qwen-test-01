@@ -9,8 +9,10 @@ MODEL_NAME = "distilgpt2"
 print(f"Loading model: {MODEL_NAME}")
 
 try:
+    print("Loading tokenizer...")
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     tokenizer.pad_token = tokenizer.eos_token  # Set pad token
+    print("Loading model...")
     model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
     print("Model loaded successfully!")
 except Exception as e:
@@ -45,22 +47,24 @@ def generate():
         with torch.no_grad():
             outputs = model.generate(
                 inputs.input_ids,
-                max_length=min(max_length, input_length + max_new_tokens),
                 max_new_tokens=max_new_tokens,
                 do_sample=True,
                 temperature=temperature,
+                top_p=0.9,
+                repetition_penalty=1.1,
                 pad_token_id=tokenizer.eos_token_id,
-                eos_token_id=tokenizer.eos_token_id,
-                early_stopping=True
+                eos_token_id=tokenizer.eos_token_id
             )
         
-        # Decode response
-        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        # Decode only the new tokens (exclude the input)
+        new_tokens = outputs[0][input_length:]
+        generated_text = tokenizer.decode(new_tokens, skip_special_tokens=True)
+        full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
         
         return jsonify({
             "prompt": prompt,
-            "response": response,
-            "generated_text": response[len(prompt):]
+            "response": full_response,
+            "generated_text": generated_text.strip()
         })
     
     except Exception as e:
