@@ -1,6 +1,6 @@
 # Qwen Lightweight Container
 
-A minimal Docker container setup for running Qwen 0.5B Instruct model with a simple REST API.
+A minimal Docker container setup for running DistilGPT2 model with a simple REST API.
 
 ## Quick Start
 
@@ -62,7 +62,7 @@ curl -X POST http://localhost:8000/generate \
 
 ## Configuration
 
-- **Model**: Qwen/Qwen2-0.5B-Instruct (ultra-lightweight 0.5B parameter model)
+- **Model**: distilgpt2 (ultra-lightweight 82M parameter model)
 - **Port**: 8000
 - **Cache**: Models are cached in `./cache` directory
 
@@ -74,6 +74,6 @@ curl -X POST http://localhost:8000/generate \
 
 ## Notes
 
-- First run will download the model (~1GB)
+- First run will download the model (~350MB)
 - The container uses CPU by default for maximum compatibility
 - Model responses are cached locally to speed up subsequent runs
