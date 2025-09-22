@@ -6,7 +6,7 @@ A minimal Docker container setup for running Qwen 1.8B Chat model with a simple 
 
 1. **Build and run the container:**
    ```bash
-   docker-compose up --build
+   docker compose up --build
    ```
 
 2. **Test the API:**
@@ -35,7 +35,7 @@ curl -X POST http://localhost:8000/generate \
 
 ## Requirements
 
-- Docker and Docker Compose
+- Docker with Compose plugin
 - At least 4GB RAM recommended
 - GPU support optional (will use CPU if no GPU available)
 
