@@ -4,8 +4,8 @@ import torch
 
 app = Flask(__name__)
 
-# Initialize model and tokenizer (using a smaller Qwen model)
-MODEL_NAME = "Qwen/Qwen-1_8B-Chat"
+# Initialize model and tokenizer (using the smallest Qwen model)
+MODEL_NAME = "Qwen/Qwen2-0.5B-Instruct"
 print(f"Loading model: {MODEL_NAME}")
 
 try:
