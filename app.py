@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
-from rag_system import RAGSystem
+# from rag_system import RAGSystem  # Temporarily disabled
 
 app = Flask(__name__)
 
-# Initialize RAG system
-rag = RAGSystem()
+# Initialize RAG system (temporarily disabled)
+# rag = RAGSystem()
+rag = None
 
 # Initialize model and tokenizer (using a lightweight compatible model)
 import os
@@ -30,8 +31,8 @@ def health():
     return jsonify({
         "status": "healthy", 
         "model_loaded": model is not None,
-        "rag_loaded": rag.is_loaded(),
-        "document_chunks": len(rag.documents) if rag.is_loaded() else 0
+        "rag_loaded": False,
+        "document_chunks": 0
     })
 
 @app.route('/load_document', methods=['POST'])
@@ -66,17 +67,9 @@ def generate():
         return jsonify({"error": "No prompt provided"}), 400
     
     try:
-        # Get RAG context if available and requested
+        # Get RAG context if available and requested (temporarily disabled)
         context = ""
-        if use_rag and rag.is_loaded():
-            context = rag.retrieve_context(prompt)
-            if context:
-                # Combine context with prompt
-                enhanced_prompt = f"Context: {context}\n\nQuestion: {prompt}\nAnswer:"
-            else:
-                enhanced_prompt = prompt
-        else:
-            enhanced_prompt = prompt
+        enhanced_prompt = prompt
         
         # Tokenize input
         inputs = tokenizer(enhanced_prompt, return_tensors="pt", truncate=True, max_length=512)
@@ -104,18 +97,18 @@ def generate():
             "prompt": prompt,
             "response": full_response,
             "generated_text": generated_text.strip(),
-            "context_used": context if use_rag and context else None,
-            "rag_enabled": use_rag and rag.is_loaded()
+            "context_used": None,
+            "rag_enabled": False
         })
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    # Auto-load document if it exists
-    doc_path = os.getenv("RAG_DOCUMENT", "/app/knowledge.md")
-    if os.path.exists(doc_path):
-        print(f"Auto-loading RAG document: {doc_path}")
-        rag.load_markdown_document(doc_path)
+    # Auto-load document if it exists (temporarily disabled)
+    # doc_path = os.getenv("RAG_DOCUMENT", "/app/knowledge.md")
+    # if os.path.exists(doc_path):
+    #     print(f"Auto-loading RAG document: {doc_path}")
+    #     rag.load_markdown_document(doc_path)
     
     app.run(host='0.0.0.0', port=8000, debug=False)
