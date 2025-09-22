@@ -9,13 +9,9 @@ MODEL_NAME = "distilgpt2"
 print(f"Loading model: {MODEL_NAME}")
 
 try:
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained(
-        MODEL_NAME,
-        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-        device_map="auto" if torch.cuda.is_available() else None,
-        trust_remote_code=True
-    )
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+    tokenizer.pad_token = tokenizer.eos_token  # Set pad token
+    model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
     print("Model loaded successfully!")
 except Exception as e:
     print(f"Error loading model: {e}")
